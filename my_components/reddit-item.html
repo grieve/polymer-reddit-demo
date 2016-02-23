@@ -1,0 +1,54 @@
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="reddit-item">
+    <template>
+        <style>
+            :host {
+                display: block;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            :host paper-card {
+                width: 100%;
+                height: 200px;
+                margin: 2%;
+                padding: 10px 10px 10px 210px;
+                background-size: 200px 200px;
+                background-repeat: no-repeat;
+            };
+            :host paper-item {
+                position: relative;
+            };
+            :host .title {
+                color: #000;
+                font-size: 18px;
+            };
+        </style>
+        <paper-card 
+            id="card"
+            elevation="3"
+        >
+            <div class="title">[[item.data.title]]</div>
+        </paper-card>
+    </template>
+    <script>
+        Polymer({
+            is: 'reddit-item',
+            properties: {
+                item: {
+                    type: Object,
+                    value: {}
+                }
+            },
+            observers: [
+                '_updateBackgroundImage(item.data.thumbnail)'
+            ],
+            _updateBackgroundImage: function(url) {
+                this.$.card.style.backgroundImage = 'url(' + url + ')';
+            }
+        });
+    </script>
+</dom-module>

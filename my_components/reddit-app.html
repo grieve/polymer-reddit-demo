@@ -1,0 +1,116 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+
+<link rel="import" href="./reddit-api.html">
+<link rel="import" href="./reddit-item.html">
+<link rel="import" href="./reddit-pagination.html">
+
+<dom-module id="reddit-app">
+
+    <style>
+        :host {
+            display: block;
+            height: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <template>
+        <paper-drawer-panel id="drawer">
+            <paper-header-panel drawer>
+                <paper-toolbar>
+                    <paper-icon-button
+                        icon="menu"
+                        paper-drawer-toggle
+                    ></paper-icon-button>
+                </paper-toolbar>
+                <paper-menu>
+                    <template
+                        is="dom-repeat"
+                        items="[[menuItems]]"
+                    >
+                        <paper-item
+                            on-tap="handleListing"
+                        >[[item]]</paper-item>
+                    </template>
+                </paper-menu>
+            </paper-header-panel>
+            <paper-header-panel main mode="standard">
+                <paper-toolbar>
+                    <paper-icon-button
+                        icon="menu"
+                        paper-drawer-toggle
+                    ></paper-icon-button>
+                    <paper-item>
+                        Polymer Reddit Client
+                    </paper-item>
+                </paper-toolbar>
+                <div class="content">
+                    <reddit-pagination
+                        pages="{{pages}}"
+                        response="{{response}}"
+                        after="{{after}}"
+                    ></reddit-pagination>
+                    <template
+                        is="dom-repeat"
+                        items="[[response.data.children]]"
+                    >
+
+                        <reddit-item
+                            item="[[item]]"
+                        ></reddit-item>
+
+                    </template>
+                </div>
+            </paper-header-panel>
+        </paper-drawer-panel>
+
+        <reddit-api
+            subreddit="earthporn"
+            listing="{{listing}}"
+            response="{{response}}"
+            after="{{after}}"
+        ></reddit-api>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'reddit-app',
+
+            properties: {
+                menuItems: {
+                    type: Array,
+                    value: ['Day', 'Week', 'Month', 'Year', 'All']
+                },
+                pages: {
+                    type: Array,
+                    value: ['']
+                },
+                after: {
+                    type: String,
+                    value: ''
+                },
+                listing: {
+                    type: String,
+                    value: 'day'
+                }
+            },
+
+            handleListing: function(val) {
+                this.listing = val.model.item.toLowerCase();
+                this.after = '';
+                this.pages = [''];
+            }
+
+        });
+
+    </script>
+
+</dom-module>

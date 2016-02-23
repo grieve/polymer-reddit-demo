@@ -1,0 +1,93 @@
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="reddit-pagination">
+    <template>
+        <style>
+            :host {
+                display: block;
+                margin: 10px 6px 20px 6px;
+            }
+            :host .flex {
+                display: flex;
+                flex-direction: row;
+            };
+            :host .expand {
+                flex: 1;
+                text-align: center;
+            };
+        </style>
+        <paper-item class="flex">
+            <paper-icon-button id="prev" icon="arrow-back"></paper-icon-button>
+            <div class="expand">
+                Page <span>[[pages.length]]</span>
+            </div>
+            <paper-icon-button id="next" icon="arrow-forward"></paper-icon-button>
+        </paper-item>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'reddit-pagination',
+            properties: {
+                pages: {
+                    type: Array,
+                    value: ['']
+                },
+                after: {
+                    type: String,
+                    notify: true,
+                    value: ''
+                },
+                response: {
+                    type: Object,
+                    value: {}
+                }
+            },
+
+            listeners: {
+                'prev.tap': 'getPrevPage',
+                'next.tap': 'getNextPage'
+            },
+
+            observers: [
+                '_updateButtonState(response)'
+            ],
+
+            _updateButtonState: function(response) {
+                if (!response || !response.data) {
+                    return;
+                }
+
+                if (response.data.after) {
+                    this.$.next.removeAttribute('disabled');
+                } else {
+                    this.$.next.setAttribute('disabled', 'disabled');
+                }
+
+                if (this.pages.length > 1) {
+                    this.$.prev.removeAttribute('disabled');
+                } else {
+                    this.$.prev.setAttribute('disabled', 'disabled');
+                }
+            },
+
+            getNextPage: function() {
+                this.push('pages', this.response.data.after);
+                this.getPage();
+            },
+
+            getPrevPage: function() {
+                this.pop('pages');
+                this.getPage();
+            },
+
+            getPage: function() {
+                this.after = this.pages[this.pages.length - 1];
+                this.$.prev.setAttribute('disabled', 'disabled');
+                this.$.next.setAttribute('disabled', 'disabled');
+            }
+
+
+        });
+    </script>
+</dom-module>

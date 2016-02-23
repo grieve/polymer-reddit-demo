@@ -1,0 +1,59 @@
+<dom-module id="reddit-api">
+    <template>
+        <iron-ajax
+             auto
+             url="[[url]]"
+             params="[[_computeParams(after, listing)]]"
+             handle-as="json"
+             last-response="{{response}}"
+        ></iron-ajax>
+    </template>
+    <script>
+        Polymer({
+            is: 'reddit-api',
+
+            properties: {
+                host: {
+                    type: String,
+                    value: 'api.reddit.com'
+                },
+                subreddit: {
+                    type: String,
+                    value: 'polymerjs'
+                },
+                listing: {
+                    type: String,
+                    value: 'hot'
+                },
+                after: {
+                    type: String,
+                    value: null
+                },
+                response: {
+                    type: Object,
+                    notify: true,
+                    value: {}
+                },
+
+                url: {
+                    type: String,
+                    computed: '_computeURL(host, subreddit, listing)'
+                }
+            },
+
+            _computeURL: function(host, subreddit, listing) {
+                console.log(host, subreddit, listing);
+                return 'https://' + host + '/r/' + subreddit + '/top';
+            },
+
+            _computeParams: function(after, listing) {
+                return {
+                    limit: 10,
+                    after: after,
+                    t: listing
+                };
+            }
+
+        });
+    </script>
+</dom-module>

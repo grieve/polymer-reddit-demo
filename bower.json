@@ -1,0 +1,27 @@
+{
+  "name": "reddit-polymer",
+  "version": "1.0.0",
+  "authors": [
+    "Ryan Grieve <me@ryangrieve.com>"
+  ],
+  "description": "A simple Polymer JS application integrating with the Reddit API",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "seed"
+  ],
+  "main": "reddit-polymer.html",
+  "license": "MIT",
+  "homepage": "https://github.com/grieve/polymer-reddit-demo/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "iron-elements": "polymerelements/iron-elements#^1.0.8",
+    "paper-elements": "polymerelements/paper-elements#^1.0.7"
+  }
+}
